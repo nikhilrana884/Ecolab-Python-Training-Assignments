@@ -43,9 +43,36 @@ class LinkedList:
 
         
 
-    #def get():
+    def get(self, pos):
+        len = self.size()
+        if(pos<0 or pos>=len):
+            print("Out of range)")
+            return
+        i = 0
+        temp = self.head
 
-    #def set():
+        while(i<pos):
+            temp = temp.next
+            i +=1 
+
+        return temp.value
+
+
+    def set(self, pos,value):
+        len = self.size()
+        if(pos<0 or pos>=len):
+            print("Out of range)")
+            return
+        
+        i = 0
+        temp = self.head
+
+        while(i<pos):
+            temp = temp.next
+            i +=1 
+
+        temp.value = value
+
 
     def size(self):
         len = 0
@@ -58,9 +85,33 @@ class LinkedList:
         return len
 
 
-    #def info():
+    def info(self):
+        len = self.size()
+        print('Linked List of size {len}:')
+    
+        temp =self.head
+        while temp :
+            print(temp.value, end="->")
+            temp = temp.next
+        print("None")
 
-    #def remove():
+        
+    
+    def remove(self, value):
+        if not self.head:
+            return 
+        if(self.head.value == value):
+            self.head = self.head.next
+            return
+        
+        temp = self.head
+
+        while temp.next:
+            if(temp.next.value == value):
+                temp.next = temp.next.next
+                return
+            temp = temp.next
+
 
     def clear(self):
         self.head = None
@@ -73,3 +124,8 @@ L.append(20)
 L.insert(30,1)
 
 print(L.size())
+
+L.set(1,50)
+L.remove(50)
+
+L.info()
