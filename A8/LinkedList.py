@@ -37,6 +37,10 @@ class LinkedList:
         return c
             
     def get(list,index):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
         n=list._first
         for i in range(index):
             n=n._next
@@ -46,6 +50,10 @@ class LinkedList:
             return n._value
 
     def set(list,index,value):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
         n=list._first
         for i in range(index):
             n=n._next
@@ -55,6 +63,10 @@ class LinkedList:
             n._value=value
 
     def insert(list, index, value):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
         y=list._first
         for i in range(index):
             y=y._next
@@ -76,6 +88,10 @@ class LinkedList:
 
 
     def remove(list, index):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
         n=list._first
         for i in range(index):
             n=n._next
