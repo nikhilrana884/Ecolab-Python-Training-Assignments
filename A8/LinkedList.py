@@ -3,7 +3,7 @@ class Node:
         self._value=value
         self._next=next
         self._previous=previous
-
+        
 class LinkedList:
     def __init__(self):
         self._first=None
@@ -35,46 +35,79 @@ class LinkedList:
             c+=1
             n=n._next
         return c
-    
-    def insert(self, index, value):
-        new = Node(value)
-        len = self.size()
-
+            
+    def get(list,index):
+        len = list.size()
         if(index<0 or index>len):
             print("Out of range)")
             return
-            
-        if index == 0:
-            new._next = self._first
-            self._first = new
+        n=list._first
+        for i in range(index):
+            n=n._next
+            if n==None:
+                break
         else:
-            count = 0
-            temp = self._first
-            while(count<index-1):
-                temp = temp._next
+            return n._value
 
-            new._next = temp._next
-            temp._next = new
-
-
-
-    def remove(self, value):
-        if not self._first:
-            return 
-        if(self._first.value == value):
-            self._first = self._first.next
+    def set(list,index,value):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
             return
-            
-        temp = self._first
+        n=list._first
+        for i in range(index):
+            n=n._next
+            if n==None:
+                break
+        else:
+            n._value=value
 
-        while temp._next:
-            if(temp._next.value == value):
-                temp.next = temp._next._next
+    def insert(list, index, value):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
+        y=list._first
+        for i in range(index):
+            y=y._next
+            if y==None:
                 return
-            temp = temp._next
 
+        
 
+        x=y._previous
 
+        new_node=Node(value,previous=x,next=y)
+        
+        if x:
+            x._next=new_node
+        else:
+            list._first=new_node
+
+        y._previous=new_node
+
+    def remove(list, index):
+        len = list.size()
+        if(index<0 or index>len):
+            print("Out of range)")
+            return
+        n=list._first
+        for i in range(index):
+            n=n._next
+            if n==None:
+                return
+        x= n._previous
+        y= n._next
+
+        if x:
+            x._next=y
+        else:
+            list._first=y
+
+        if y:
+            y._previous=x
+        return n._value
+    
 l1 = LinkedList()
 
 print(l1.info())
@@ -110,18 +143,22 @@ def set(list,index,value):
     else:
         n._value=value
 
-LinkedList.set=set
+l=LinkedList()
+for n in range(10,101,10):
+    l.append(n)
 
+print(l.info())
 
-l2=LinkedList()
-for i in range(5):
-    l2.append(i)
-    
-for i in range(l2.size()):
-    print(l2.get(i))
-    l2.set(i, i*10)
+l.insert(0,0)
+l.insert(6,55)
+print(l.info())
 
-print(l2.info())
+print(l.remove(8))#70
+print(l.remove(0))#0
+print(l.remove(l.size()-1))
+print(l.info())
 
-l1.insert(1,90)
-print(l1.info())
+for x in range(l.size()):
+    l.set(x, l.get(x)/10)
+
+print(l.info())
