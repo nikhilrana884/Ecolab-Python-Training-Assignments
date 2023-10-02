@@ -7,6 +7,7 @@ class Node:
 class LinkedList:
     def __init__(self, *args):
         self._first=None
+        self._last=None
         self.append(*args)
 
     def append(self, *args):
@@ -15,13 +16,14 @@ class LinkedList:
 
 
     def _append(self, value):
+        n = Node(value)
         if self._first==None: # list is empty
-            self._first=Node(value)
+            self._first=n
+            self._last=n
         else: # add to the end of a non-empty list
-            n=self._first
-            while n._next:
-                n=n._next
-            n._next=Node(value, previous=n)
+            self._last._next = n
+            n._previous = self._last
+            self._last = n
 
     #def info(self):
     def __str__(self):
@@ -140,7 +142,7 @@ l= create_list(100)
 s = sum_list(l)
 print(s)
 
-max=50
+max=10000
 
 import time
 
@@ -155,4 +157,3 @@ sum=sum_list(l)
 end=time.time()
 print(f'sum is {sum}')
 print(f'Total time taken to sum list is {end-start}')
-
