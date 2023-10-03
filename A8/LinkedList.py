@@ -1,3 +1,4 @@
+
 class Node:
     def __init__(self, value,next=None, previous=None):
         self._value=value
@@ -5,19 +6,28 @@ class Node:
         self._previous=previous
         
 class LinkedList:
-    def __init__(self):
+    def __init__(self, *args):
         self._first=None
+        self._last=None
+        self.append(*args)
 
-    def append(self, value):
+    def append(self, *args):
+        for value in args:
+            self._append(value)
+
+
+    def _append(self, value):
+        n = Node(value)
         if self._first==None: # list is empty
-            self._first=Node(value)
+            self._first=n
+            self._last=n
         else: # add to the end of a non-empty list
-            n=self._first
-            while n._next:
-                n=n._next
-            n._next=Node(value, previous=n)
+            self._last._next = n
+            n._previous = self._last
+            self._last = n
 
-    def info(self):
+    #def info(self):
+    def __str__(self):
         if self._first==None: 
             return "LinkedList(empty)"
         str="LinkedList(\t"
@@ -27,94 +37,135 @@ class LinkedList:
             n=n._next
         str+=")"
         return str
-    
-    def size(self):
+
+    #def size(self):
+    def __len__(self):
         c=0
         n=self._first
         while n:
             c+=1
             n=n._next
         return c
-            
-    def get(list,index):
-        len = list.size()
-        if(index<0 or index>len):
-            print("Out of range)")
-            return
-        n=list._first
-        for i in range(index):
-            n=n._next
-            if n==None:
-                break
-        else:
-            return n._value
 
-    def set(list,index,value):
-        len = list.size()
-        if(index<0 or index>len):
-            print("Out of range)")
-            return
-        n=list._first
-        for i in range(index):
-            n=n._next
-            if n==None:
-                break
-        else:
-            n._value=value
-
-    def insert(list, index, value):
-        len = list.size()
-        if(index<0 or index>len):
-            print("Out of range)")
-            return
-        y=list._first
-        for i in range(index):
-            y=y._next
-            if y==None:
-                return
-
+    def __locate(self,index):
+        if index>=len(self):
+            raise IndexError(f'Invalid Index :{index}')
         
+        n=self._first
+        for i in range(index):
+            n=n._next
+            
+        return n
 
-        x=y._previous
+
+             
+    #def get(self,index):
+    def __getitem__(self,index):
+        n=self.__locate(index)
+        return n._value  #if n else None
+    
+
+    #def set(self,index,value):
+    def __setitem__(self,index,value):
+        n=self.__locate(index)
+        n._value=value
+
+    def insert(self, index, value):
+        y=self.__locate(index)
+        x=y._previous 
 
         new_node=Node(value,previous=x,next=y)
         
         if x:
             x._next=new_node
         else:
-            list._first=new_node
+            self._first=new_node
 
         y._previous=new_node
 
-
-    def remove(list, index):
-        len = list.size()
-        if(index<0 or index>len):
-            print("Out of range)")
-            return
-        n=list._first
-        for i in range(index):
-            n=n._next
-            if n==None:
-                return
+    def remove(self, index):
+        n=self.__locate(index)
+        
         x= n._previous
         y= n._next
 
         if x:
             x._next=y
         else:
-            list._first=y
+            self._first=y
 
         if y:
             y._previous=x
         return n._value
     
+    def list_sum(self):
+        temp = self._first
+        total_sum = 0
+
+        while temp is not None:
+            total_sum += temp._value
+            temp = temp._next
+
+        return total_sum
+
+    
+        
+    
+
 l=LinkedList()
-for n in range(10,101,10):
-    l.append(n)
+print(l)
+print(len(l))
 
-print(l.info())
+for x in [2,3,9,2,5]:
+    l.append(x)
 
-l.insert(0,0)
-l.insert(6,55)
-print(l.info())
+print(l)
+print(len(l))
+
+
+for i in range(len(l)):
+    print(l[i])
+    l[i]*=3
+
+print(l)
+
+def create_list(size):
+    l=LinkedList()
+    for x in range(1,size+1):
+        l.append(x)
+
+    return l
+
+
+def sum_list(l):
+    sum=0
+    for i in range(len(l)):
+        sum+=l[i]
+    return sum
+
+l= create_list(100)
+s = sum_list(l)
+print(s)
+
+max=1000
+
+import time
+
+start=time.time()
+l=create_list(max)
+end=time.time()
+print(f'Total time taken to create list is {end-start}')
+
+
+start=time.time()
+sum=sum_list(l)
+end=time.time()
+print(f'sum is {sum}')
+print(f'Total time taken to sum list is {end-start}')
+
+
+start=time.time()
+sum=l.list_sum()
+end=time.time()
+print(f'sum is {sum}')
+print(f'Total time taken to sum list is {end-start}')
